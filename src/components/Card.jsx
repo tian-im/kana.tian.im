@@ -11,10 +11,14 @@ export default function Card({ char, romaji, isRevealed, onReveal, size = 'norma
 
   const speak = (e) => {
     e.stopPropagation();
-    const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${char}&tl=ja&client=tw-ob`);
+
+    // Use local audio files
+    const audioPath = `${import.meta.env.BASE_URL}audio/${romaji}.mp3`;
+    const audio = new Audio(audioPath);
+
     audio.play().catch(error => {
       console.error('Audio playback failed:', error);
-      // Fallback to synthesis
+      // Fallback to synthesis if file missing
       const utterance = new SpeechSynthesisUtterance(char);
       utterance.lang = 'ja-JP';
       window.speechSynthesis.speak(utterance);
