@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Fragment } from 'react';
 import Card from './components/Card';
 import { HIRAGANA, KATAKANA } from './data/kana';
 
@@ -13,7 +13,7 @@ function App() {
 
   // Initialize quiz data
   useMemo(() => {
-    setShuffledData([...data].sort(() => Math.random() - 0.5));
+    setShuffledData([...data].filter(item => item !== null).sort(() => Math.random() - 0.5));
     setQuizIndex(0);
     setIsQuizRevealed(false);
   }, [data, view]);
@@ -29,21 +29,21 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center py-10 px-4">
+    <div className="min-h-screen text-slate-900 flex flex-col items-center py-10 px-4">
       <header className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
         <div>
-          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent transform hover:scale-105 transition-transform duration-300">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent transform hover:scale-105 transition-transform duration-300">
             Kana Memory
           </h1>
-          <p className="text-slate-400 mt-2">Master the Japanese Syllabary</p>
+          <p className="text-slate-600 mt-2">Master the Japanese Syllabary</p>
         </div>
 
-        <div className="flex gap-4 bg-slate-800 p-2 rounded-2xl shadow-lg border border-slate-700">
+        <div className="flex gap-4 bg-white/50 p-2 rounded-2xl shadow-sm border border-slate-200">
           <button
             onClick={() => setSyllabary('hiragana')}
             className={`px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${syllabary === 'hiragana'
-                ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
-                : 'text-slate-400 hover:text-white hover:bg-slate-700'
+              ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
+              : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
               }`}
           >
             Hiragana
@@ -51,8 +51,8 @@ function App() {
           <button
             onClick={() => setSyllabary('katakana')}
             className={`px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${syllabary === 'katakana'
-                ? 'bg-pink-500 text-white shadow-lg shadow-pink-500/25'
-                : 'text-slate-400 hover:text-white hover:bg-slate-700'
+              ? 'bg-pink-500 text-white shadow-lg shadow-pink-500/25'
+              : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
               }`}
           >
             Katakana
@@ -62,17 +62,17 @@ function App() {
 
       <main className="w-full max-w-5xl">
         <div className="flex justify-center mb-8">
-          <div className="flex gap-2 bg-slate-800/50 p-1 rounded-xl backdrop-blur-sm border border-slate-700/50">
+          <div className="flex gap-2 bg-white/50 p-1 rounded-xl backdrop-blur-sm border border-slate-200">
             <button
               onClick={() => setView('grid')}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'grid' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'
+              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'grid' ? 'bg-indigo-600 shadow-sm text-white' : 'text-slate-500 hover:text-slate-900'
                 }`}
             >
               Grid View
             </button>
             <button
               onClick={() => setView('quiz')}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'quiz' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white'
+              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'quiz' ? 'bg-indigo-600 shadow-sm text-white' : 'text-slate-500 hover:text-slate-900'
                 }`}
             >
               Quiz Mode
@@ -81,16 +81,42 @@ function App() {
         </div>
 
         {view === 'grid' ? (
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 justify-items-center">
-            {data.map((item, index) => (
-              <Card
-                key={`${item.char}-${index}`}
-                char={item.char}
-                romaji={item.romaji}
-                isRevealed={false}
-                onReveal={() => { }}
-              />
+          <div className="grid grid-cols-[auto_repeat(5,_minmax(0,_1fr))] gap-x-1 gap-y-2 sm:gap-x-2 sm:gap-y-4 justify-items-center max-w-lg mx-auto transform scale-90 sm:scale-100 origin-top">
+            {/* Column Headers */}
+            <div className="p-2"></div>
+            {['a', 'i', 'u', 'e', 'o'].map(col => (
+              <div key={col} className="flex items-center justify-center font-bold text-slate-400 capitalize pb-2">
+                {col}
+              </div>
             ))}
+
+            {/* Rows */}
+            {['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', 'n'].map((rowLabel, rowIndex) => {
+              // Render Row Header and 5 cells
+              const rowItems = data.slice(rowIndex * 5, (rowIndex + 1) * 5);
+              return (
+                <Fragment key={rowLabel}>
+                  <div className="flex items-center justify-center font-bold text-slate-400 capitalize pr-2">
+                    {rowLabel === '-' ? '' : rowLabel}
+                  </div>
+                  {rowItems.map((item, colIndex) => (
+                    item ? (
+                      <div key={`${item.char}-${colIndex}`} className="w-full aspect-[3/4]">
+                        <Card
+                          char={item.char}
+                          romaji={item.romaji}
+                          isRevealed={true}
+                          onReveal={() => { }}
+                          size="compact"
+                        />
+                      </div>
+                    ) : (
+                      <div key={`empty-${rowIndex}-${colIndex}`} className="w-full" />
+                    )
+                  ))}
+                </Fragment>
+              );
+            })}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[400px]">
@@ -102,32 +128,25 @@ function App() {
                   romaji={shuffledData[quizIndex].romaji}
                   isRevealed={isQuizRevealed}
                   onReveal={() => setIsQuizRevealed(true)}
+                  size="normal"
                 />
               )}
             </div>
 
             <div className="flex gap-4 items-center mt-8">
               <button
-                onClick={handlePrevQuiz}
-                className="p-3 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors border border-transparent hover:border-slate-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
-              </button>
-              <div className="text-slate-500 font-mono">
-                {quizIndex + 1} / {shuffledData.length}
-              </div>
-              <button
                 onClick={handleNextQuiz}
-                className="p-3 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors border border-transparent hover:border-slate-700"
+                className="px-8 py-3 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 hover:shadow-indigo-500/30 transform hover:-translate-y-0.5 transition-all"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                Next Card
               </button>
             </div>
-            <p className="mt-4 text-slate-500 text-sm">Click card to reveal answer</p>
+            <p className="mt-8 text-slate-400 text-sm">Click card to reveal answer</p>
           </div>
         )}
-      </main>
-    </div>
+
+      </main >
+    </div >
   );
 }
 
