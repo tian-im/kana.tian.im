@@ -30,62 +30,62 @@ function App() {
 
   return (
     <div className="min-h-screen text-slate-900 flex flex-col items-center py-10 px-4">
-      <header className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+      <header className="w-full max-w-5xl flex flex-col md:flex-row items-center justify-between mb-4 gap-4 px-4">
         <div>
-          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent transform hover:scale-105 transition-transform duration-300">
+          <h1 className="text-2xl font-extrabold bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent">
             Kana Memory
           </h1>
-          <p className="text-slate-600 mt-2">Master the Japanese Syllabary</p>
         </div>
 
-        <div className="flex gap-4 bg-white/50 p-2 rounded-2xl shadow-sm border border-slate-200">
-          <button
-            onClick={() => setSyllabary('hiragana')}
-            className={`px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${syllabary === 'hiragana'
-              ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
-              : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
-              }`}
-          >
-            Hiragana
-          </button>
-          <button
-            onClick={() => setSyllabary('katakana')}
-            className={`px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${syllabary === 'katakana'
-              ? 'bg-pink-500 text-white shadow-lg shadow-pink-500/25'
-              : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
-              }`}
-          >
-            Katakana
-          </button>
-        </div>
-      </header>
-
-      <main className="w-full max-w-5xl">
-        <div className="flex justify-center mb-8">
-          <div className="flex gap-2 bg-white/50 p-1 rounded-xl backdrop-blur-sm border border-slate-200">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex gap-2 bg-white/50 p-1 rounded-xl shadow-sm border border-slate-200">
             <button
-              onClick={() => setView('grid')}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'grid' ? 'bg-indigo-600 shadow-sm text-white' : 'text-slate-500 hover:text-slate-900'
+              onClick={() => setSyllabary('hiragana')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 ${syllabary === 'hiragana'
+                ? 'bg-indigo-500 text-white shadow-md'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
                 }`}
             >
-              Grid View
+              Hiragana
+            </button>
+            <button
+              onClick={() => setSyllabary('katakana')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 ${syllabary === 'katakana'
+                ? 'bg-pink-500 text-white shadow-md'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
+                }`}
+            >
+              Katakana
+            </button>
+          </div>
+
+          <div className="flex gap-2 bg-white/50 p-1 rounded-xl shadow-sm border border-slate-200">
+            <button
+              onClick={() => setView('grid')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'grid' ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900'
+                }`}
+            >
+              Grid
             </button>
             <button
               onClick={() => setView('quiz')}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'quiz' ? 'bg-indigo-600 shadow-sm text-white' : 'text-slate-500 hover:text-slate-900'
+              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'quiz' ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900'
                 }`}
             >
-              Quiz Mode
+              Quiz
             </button>
           </div>
         </div>
+      </header>
+
+      <main className="w-full max-w-5xl flex-1 flex flex-col">
 
         {view === 'grid' ? (
-          <div className="grid grid-cols-[auto_repeat(5,_minmax(0,_1fr))] gap-x-1 gap-y-2 sm:gap-x-2 sm:gap-y-4 justify-items-center max-w-lg mx-auto transform scale-90 sm:scale-100 origin-top">
+          <div className="grid grid-cols-[auto_repeat(5,_minmax(0,_1fr))] gap-0.5 justify-items-center max-w-[280px] mx-auto w-full">
             {/* Column Headers */}
-            <div className="p-2"></div>
+            <div className="p-1"></div>
             {['a', 'i', 'u', 'e', 'o'].map(col => (
-              <div key={col} className="flex items-center justify-center font-bold text-slate-400 capitalize pb-2">
+              <div key={col} className="flex items-center justify-center font-bold text-slate-400 capitalize pb-1 text-xs">
                 {col}
               </div>
             ))}
@@ -96,12 +96,12 @@ function App() {
               const rowItems = data.slice(rowIndex * 5, (rowIndex + 1) * 5);
               return (
                 <Fragment key={rowLabel}>
-                  <div className="flex items-center justify-center font-bold text-slate-400 capitalize pr-2">
+                  <div className="flex items-center justify-center font-bold text-slate-400 capitalize pr-1 text-xs">
                     {rowLabel === '-' ? '' : rowLabel}
                   </div>
                   {rowItems.map((item, colIndex) => (
                     item ? (
-                      <div key={`${item.char}-${colIndex}`} className="w-full aspect-[3/4]">
+                      <div key={`${item.char}-${colIndex}`} className="w-full">
                         <Card
                           char={item.char}
                           romaji={item.romaji}
@@ -120,7 +120,7 @@ function App() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[400px]">
-            <div className="mb-8 scale-150 transform transition-transform duration-500">
+            <div className="mb-8 transform transition-transform duration-500">
               {shuffledData.length > 0 && (
                 <Card
                   key={shuffledData[quizIndex].char}
@@ -133,7 +133,7 @@ function App() {
               )}
             </div>
 
-            <div className="flex gap-4 items-center mt-8">
+            <div className="flex gap-4 items-center">
               <button
                 onClick={handleNextQuiz}
                 className="px-8 py-3 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 hover:shadow-indigo-500/30 transform hover:-translate-y-0.5 transition-all"
@@ -144,6 +144,7 @@ function App() {
             <p className="mt-8 text-slate-400 text-sm">Click card to reveal answer</p>
           </div>
         )}
+
 
       </main >
     </div >
