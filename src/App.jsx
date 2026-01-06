@@ -1,10 +1,10 @@
-import { useState, useMemo, Fragment } from 'react';
+import { useState, useMemo, Fragment, useEffect } from 'react';
 import Card from './components/Card';
 import { HIRAGANA, KATAKANA } from './data/kana';
 
 function App() {
   const [syllabary, setSyllabary] = useState('hiragana'); // 'hiragana', 'katakana'
-  const [view, setView] = useState('grid'); // 'grid', 'quiz'
+  const [view, setView] = useState(() => localStorage.getItem('kanaView') || 'grid'); // 'grid', 'quiz'
   const [quizIndex, setQuizIndex] = useState(0);
   const [isQuizRevealed, setIsQuizRevealed] = useState(false);
   const [shuffledData, setShuffledData] = useState([]);
@@ -28,6 +28,10 @@ function App() {
     setQuizIndex((prev) => (prev - 1 + shuffledData.length) % shuffledData.length);
   };
 
+  useEffect(() => {
+    localStorage.setItem('kanaView', view);
+  }, [view]);
+
   return (
     <div className="min-h-screen text-slate-900 flex flex-col items-center py-10 px-4">
       <header className="w-full max-w-5xl flex flex-col md:flex-row items-center justify-between mb-4 gap-4 px-4">
@@ -38,6 +42,23 @@ function App() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex gap-2 bg-white/50 p-1 rounded-xl shadow-sm border border-slate-200">
+            <button
+              onClick={() => setView('grid')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'grid' ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900'
+                }`}
+            >
+              Grid
+            </button>
+            <button
+              onClick={() => setView('quiz')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'quiz' ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900'
+                }`}
+            >
+              Quiz
+            </button>
+          </div>
+
           <div className="flex gap-2 bg-white/50 p-1 rounded-xl shadow-sm border border-slate-200">
             <button
               onClick={() => setSyllabary('hiragana')}
@@ -56,23 +77,6 @@ function App() {
                 }`}
             >
               Katakana
-            </button>
-          </div>
-
-          <div className="flex gap-2 bg-white/50 p-1 rounded-xl shadow-sm border border-slate-200">
-            <button
-              onClick={() => setView('grid')}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'grid' ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900'
-                }`}
-            >
-              Grid
-            </button>
-            <button
-              onClick={() => setView('quiz')}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${view === 'quiz' ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900'
-                }`}
-            >
-              Quiz
             </button>
           </div>
         </div>
