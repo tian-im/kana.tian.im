@@ -8,6 +8,7 @@ function App() {
   const [quizIndex, setQuizIndex] = useState(0);
   const [isQuizRevealed, setIsQuizRevealed] = useState(false);
   const [shuffledData, setShuffledData] = useState([]);
+  const [gridScale, setGridScale] = useState(() => parseFloat(localStorage.getItem('gridScale')) || 1);
 
   const data = syllabary === 'hiragana' ? HIRAGANA : KATAKANA;
 
@@ -32,6 +33,10 @@ function App() {
     localStorage.setItem('kanaView', view);
   }, [view]);
 
+  useEffect(() => {
+    localStorage.setItem('gridScale', gridScale);
+  }, [gridScale]);
+
   return (
     <div className="min-h-screen text-slate-900 flex flex-col items-center py-10 px-4">
       <header className="w-full max-w-5xl flex flex-col md:flex-row items-center justify-between mb-4 gap-4 px-4">
@@ -42,6 +47,25 @@ function App() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4">
+          {view === 'grid' && (
+            <div className="hidden sm:flex gap-2 bg-white/50 p-1 rounded-xl shadow-sm border border-slate-200">
+              <button
+                onClick={() => setGridScale(1)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${gridScale === 1 ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'}`}
+                title="Reset Zoom (1x)"
+              >
+                Reset
+              </button>
+              <button
+                onClick={() => setGridScale(2)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${gridScale === 2 ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'}`}
+                title="Zoom 2x"
+              >
+                2x
+              </button>
+            </div>
+          )}
+
           <div className="flex gap-2 bg-white/50 p-1 rounded-xl shadow-sm border border-slate-200">
             <button
               onClick={() => setView('grid')}
@@ -85,43 +109,48 @@ function App() {
       <main className="w-full max-w-5xl flex-1 flex flex-col">
 
         {view === 'grid' ? (
-          <div className="grid grid-cols-[auto_repeat(5,_minmax(0,_1fr))] gap-0.5 justify-items-center max-w-[280px] mx-auto w-full">
-            {/* Column Headers */}
-            <div className="p-1"></div>
-            {['a', 'i', 'u', 'e', 'o'].map(col => (
-              <div key={col} className="flex items-center justify-center font-bold text-slate-400 capitalize pb-1 text-xs">
-                {col}
-              </div>
-            ))}
+          <div className="w-full flex justify-center overflow-auto py-4">
+            <div
+              className="grid grid-cols-[auto_repeat(5,_minmax(0,_1fr))] gap-0.5 justify-items-center max-w-[280px] w-full origin-top transition-transform duration-300"
+              style={{ transform: `scale(${gridScale})` }}
+            >
+              {/* Column Headers */}
+              <div className="p-1"></div>
+              {['a', 'i', 'u', 'e', 'o'].map(col => (
+                <div key={col} className="flex items-center justify-center font-bold text-slate-400 capitalize pb-1 text-xs">
+                  {col}
+                </div>
+              ))}
 
-            {/* Rows */}
-            {['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', 'n'].map((rowLabel, rowIndex) => {
-              // Render Row Header and 5 cells
-              const rowItems = data.slice(rowIndex * 5, (rowIndex + 1) * 5);
-              return (
-                <Fragment key={rowLabel}>
-                  <div className="flex items-center justify-center font-bold text-slate-400 capitalize pr-1 text-xs">
-                    {rowLabel === '-' ? '' : rowLabel}
-                  </div>
-                  {rowItems.map((item, colIndex) => (
-                    item ? (
-                      <div key={`${item.char}-${colIndex}`} className="w-full">
-                        <Card
-                          char={item.char}
-                          romaji={item.romaji}
-                          origin={item.origin}
-                          isRevealed={true}
-                          onReveal={() => { }}
-                          size="compact"
-                        />
-                      </div>
-                    ) : (
-                      <div key={`empty-${rowIndex}-${colIndex}`} className="w-full" />
-                    )
-                  ))}
-                </Fragment>
-              );
-            })}
+              {/* Rows */}
+              {['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', 'n'].map((rowLabel, rowIndex) => {
+                // Render Row Header and 5 cells
+                const rowItems = data.slice(rowIndex * 5, (rowIndex + 1) * 5);
+                return (
+                  <Fragment key={rowLabel}>
+                    <div className="flex items-center justify-center font-bold text-slate-400 capitalize pr-1 text-xs">
+                      {rowLabel === '-' ? '' : rowLabel}
+                    </div>
+                    {rowItems.map((item, colIndex) => (
+                      item ? (
+                        <div key={`${item.char}-${colIndex}`} className="w-full">
+                          <Card
+                            char={item.char}
+                            romaji={item.romaji}
+                            origin={item.origin}
+                            isRevealed={true}
+                            onReveal={() => { }}
+                            size="compact"
+                          />
+                        </div>
+                      ) : (
+                        <div key={`empty-${rowIndex}-${colIndex}`} className="w-full" />
+                      )
+                    ))}
+                  </Fragment>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[400px]">
