@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Card({ char, romaji, isRevealed, onReveal, size = 'normal' }) {
+export default function Card({ char, romaji, origin, isRevealed, onReveal, size = 'normal' }) {
   const [flipped, setFlipped] = useState(false);
 
   useEffect(() => {
@@ -59,7 +59,10 @@ export default function Card({ char, romaji, isRevealed, onReveal, size = 'norma
           >
             {char}
           </button>
-          <span className={`${size === 'compact' ? 'text-[9px] sm:text-[10px]' : 'text-xl'} font-medium text-indigo-400`}>{romaji}</span>
+          <span className={`${size === 'compact' ? 'text-[9px] sm:text-[10px]' : 'text-xl'} font-medium text-indigo-400 flex items-center gap-1`}>
+            {romaji}
+            {origin && <span className="text-slate-300">({origin})</span>}
+          </span>
         </div>
       </div>
     </div>

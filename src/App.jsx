@@ -109,6 +109,7 @@ function App() {
                         <Card
                           char={item.char}
                           romaji={item.romaji}
+                          origin={item.origin}
                           isRevealed={true}
                           onReveal={() => { }}
                           size="compact"
@@ -130,6 +131,7 @@ function App() {
                   key={shuffledData[quizIndex].char}
                   char={shuffledData[quizIndex].char}
                   romaji={shuffledData[quizIndex].romaji}
+                  origin={shuffledData[quizIndex].origin}
                   isRevealed={isQuizRevealed}
                   onReveal={() => setIsQuizRevealed(true)}
                   size="normal"
