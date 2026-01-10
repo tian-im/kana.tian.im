@@ -51,14 +51,16 @@ function App() {
             <div className="hidden sm:flex gap-2 bg-white/50 p-1 rounded-xl shadow-sm border border-slate-200">
               <button
                 onClick={() => setGridScale(1)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${gridScale === 1 ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'}`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center ${gridScale === 1 ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'}`}
+                style={{ minWidth: '60px' }}
                 title="Reset Zoom (1x)"
               >
                 Reset
               </button>
               <button
                 onClick={() => setGridScale(2)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${gridScale === 2 ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'}`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center ${gridScale === 2 ? 'bg-indigo-600 shadow-md text-white' : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'}`}
+                style={{ minWidth: '40px' }}
                 title="Zoom 2x"
               >
                 2x
@@ -109,15 +111,15 @@ function App() {
       <main className="w-full max-w-5xl flex-1 flex flex-col">
 
         {view === 'grid' ? (
-          <div className="w-full flex justify-center overflow-auto py-4">
+          <div className="w-full flex flex-col items-center py-4">
             <div
-              className="grid grid-cols-[auto_repeat(5,_minmax(0,_1fr))] gap-0.5 justify-items-center max-w-[280px] w-full origin-top transition-transform duration-300"
-              style={{ transform: `scale(${gridScale})` }}
+              className="grid grid-cols-[auto_repeat(5,_minmax(0,_1fr))] gap-0.5 justify-items-center w-full transition-all duration-300"
+              style={{ maxWidth: gridScale === 2 ? '560px' : '280px' }}
             >
               {/* Column Headers */}
               <div className="p-1"></div>
               {['a', 'i', 'u', 'e', 'o'].map(col => (
-                <div key={col} className="flex items-center justify-center font-bold text-slate-400 capitalize pb-1 text-xs">
+                <div key={col} className={`flex items-center justify-center font-bold text-slate-400 capitalize pb-1 ${gridScale === 2 ? 'text-xl' : 'text-xs'}`}>
                   {col}
                 </div>
               ))}
@@ -128,7 +130,7 @@ function App() {
                 const rowItems = data.slice(rowIndex * 5, (rowIndex + 1) * 5);
                 return (
                   <Fragment key={rowLabel}>
-                    <div className="flex items-center justify-center font-bold text-slate-400 capitalize pr-1 text-xs">
+                    <div className={`flex items-center justify-center font-bold text-slate-400 capitalize pr-1 ${gridScale === 2 ? 'text-xl' : 'text-xs'}`}>
                       {rowLabel === '-' ? '' : rowLabel}
                     </div>
                     {rowItems.map((item, colIndex) => (
@@ -141,6 +143,7 @@ function App() {
                             isRevealed={true}
                             onReveal={() => { }}
                             size="compact"
+                            scale={gridScale}
                           />
                         </div>
                       ) : (
@@ -150,6 +153,33 @@ function App() {
                   </Fragment>
                 );
               })}
+            </div>
+
+            {/* Origin Reference Links */}
+            <div className="mt-16 mb-8 flex flex-col items-center gap-3 border-t border-slate-100 pt-8 w-full max-w-sm">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 pointer-events-none text-center">
+                Origins & References
+              </p>
+              <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Hiragana_origin.svg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-slate-500 hover:text-indigo-600 transition-colors flex items-center gap-2 group font-medium"
+                >
+                  <span className="w-2 h-2 rounded-full bg-indigo-400 group-hover:scale-125 transition-transform shadow-sm shadow-indigo-200"></span>
+                  Hiragana Origin
+                </a>
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Katakana_origine.svg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-slate-500 hover:text-pink-600 transition-colors flex items-center gap-2 group font-medium"
+                >
+                  <span className="w-2 h-2 rounded-full bg-pink-400 group-hover:scale-125 transition-transform shadow-sm shadow-pink-200"></span>
+                  Katakana Origin
+                </a>
+              </div>
             </div>
           </div>
         ) : (
