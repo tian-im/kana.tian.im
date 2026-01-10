@@ -3,7 +3,7 @@ import Card from './components/Card';
 import { HIRAGANA, KATAKANA } from './data/kana';
 
 function App() {
-  const [syllabary, setSyllabary] = useState('hiragana'); // 'hiragana', 'katakana'
+  const [syllabary, setSyllabary] = useState(() => localStorage.getItem('kanaSyllabary') || 'hiragana'); // 'hiragana', 'katakana'
   const [view, setView] = useState(() => localStorage.getItem('kanaView') || 'grid'); // 'grid', 'quiz'
   const [quizIndex, setQuizIndex] = useState(0);
   const [isQuizRevealed, setIsQuizRevealed] = useState(false);
@@ -36,6 +36,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('gridScale', gridScale);
   }, [gridScale]);
+
+  useEffect(() => {
+    localStorage.setItem('kanaSyllabary', syllabary);
+  }, [syllabary]);
 
   return (
     <div className="min-h-screen text-slate-900 flex flex-col items-center py-10 px-4">
