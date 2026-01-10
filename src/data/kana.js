@@ -10,6 +10,13 @@ export const HIRAGANA = [
   { char: 'ら', romaji: 'ra', origin: '良' }, { char: 'り', romaji: 'ri', origin: '利' }, { char: 'る', romaji: 'ru', origin: '留' }, { char: 'れ', romaji: 're', origin: '礼' }, { char: 'ろ', romaji: 'ro', origin: '呂' },
   { char: 'わ', romaji: 'wa', origin: '和' }, null, null, null, { char: 'を', romaji: 'wo', origin: '遠' },
   { char: 'ん', romaji: 'n', origin: '无' }, null, null, null, null,
+  // Dakuten
+  { char: 'が', romaji: 'ga', origin: '加' }, { char: 'ぎ', romaji: 'gi', origin: '機' }, { char: 'ぐ', romaji: 'gu', origin: '久' }, { char: 'げ', romaji: 'ge', origin: '計' }, { char: 'ご', romaji: 'go', origin: '己' },
+  { char: 'ざ', romaji: 'za', origin: '左' }, { char: 'じ', romaji: 'ji', origin: '之' }, { char: 'ず', romaji: 'zu', origin: '寸' }, { char: 'ぜ', romaji: 'ze', origin: '世' }, { char: 'ぞ', romaji: 'zo', origin: '曽' },
+  { char: 'だ', romaji: 'da', origin: '太' }, { char: 'ぢ', romaji: 'ji', origin: '知' }, { char: 'づ', romaji: 'zu', origin: '川' }, { char: 'で', romaji: 'de', origin: '天' }, { char: 'ど', romaji: 'do', origin: '止' },
+  { char: 'ば', romaji: 'ba', origin: '波' }, { char: 'び', romaji: 'bi', origin: '比' }, { char: 'ぶ', romaji: 'bu', origin: '不' }, { char: 'べ', romaji: 'be', origin: '部' }, { char: 'ぼ', romaji: 'bo', origin: '保' },
+  // Handakuten
+  { char: 'ぱ', romaji: 'pa', origin: '波' }, { char: 'ぴ', romaji: 'pi', origin: '比' }, { char: 'ぷ', romaji: 'pu', origin: '不' }, { char: 'ぺ', romaji: 'pe', origin: '部' }, { char: 'ぽ', romaji: 'po', origin: '保' },
 ];
 
 export const KATAKANA = [
@@ -24,4 +31,11 @@ export const KATAKANA = [
   { char: 'ラ', romaji: 'ra', origin: '良' }, { char: 'リ', romaji: 'ri', origin: '利' }, { char: 'ル', romaji: 'ru', origin: '流' }, { char: 'レ', romaji: 're', origin: '礼' }, { char: 'ロ', romaji: 'ro', origin: '呂' },
   { char: 'ワ', romaji: 'wa', origin: '和' }, null, null, null, { char: 'ヲ', romaji: 'wo', origin: '乎' },
   { char: 'ン', romaji: 'n', origin: '尓' }, null, null, null, null,
+  // Dakuten
+  { char: 'ガ', romaji: 'ga', origin: '加' }, { char: 'ギ', romaji: 'gi', origin: '機' }, { char: 'グ', romaji: 'gu', origin: '久' }, { char: 'ゲ', romaji: 'ge', origin: '介' }, { char: 'ゴ', romaji: 'go', origin: '己' },
+  { char: 'ザ', romaji: 'za', origin: '散' }, { char: 'ジ', romaji: 'ji', origin: '之' }, { char: 'ズ', romaji: 'zu', origin: '須' }, { char: 'ゼ', romaji: 'ze', origin: '世' }, { char: 'ゾ', romaji: 'zo', origin: '曽' },
+  { char: 'ダ', romaji: 'da', origin: '多' }, { char: 'ヂ', romaji: 'ji', origin: '千' }, { char: 'ヅ', romaji: 'zu', origin: '川' }, { char: 'デ', romaji: 'de', origin: '天' }, { char: 'ド', romaji: 'do', origin: '止' },
+  { char: 'バ', romaji: 'ba', origin: '八' }, { char: 'ビ', romaji: 'bi', origin: '比' }, { char: 'ブ', romaji: 'bu', origin: '不' }, { char: 'ベ', romaji: 'be', origin: '部' }, { char: 'ボ', romaji: 'bo', origin: '保' },
+  // Handakuten
+  { char: 'パ', romaji: 'pa', origin: '八' }, { char: 'ピ', romaji: 'pi', origin: '比' }, { char: 'プ', romaji: 'pu', origin: '不' }, { char: 'ペ', romaji: 'pe', origin: '部' }, { char: 'ポ', romaji: 'po', origin: '保' },
 ];

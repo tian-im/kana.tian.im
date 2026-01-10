@@ -129,17 +129,43 @@ function App() {
               ))}
 
               {/* Rows */}
-              {['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', 'n'].map((rowLabel, rowIndex) => {
+              {['-', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', 'n', 'g', 'z', 'd', 'b', 'p'].map((rowLabel, rowIndex) => {
+                const isDakuten = ['g', 'z', 'd', 'b'].includes(rowLabel);
+                const isHandakuten = rowLabel === 'p';
+
+                const showDakutenHeader = rowLabel === 'g';
+                const showHandakutenHeader = rowLabel === 'p';
+
+                const sectionBg = isDakuten
+                  ? 'bg-blue-50'
+                  : isHandakuten
+                    ? 'bg-pink-50'
+                    : '';
+
                 // Render Row Header and 5 cells
                 const rowItems = data.slice(rowIndex * 5, (rowIndex + 1) * 5);
                 return (
                   <Fragment key={rowLabel}>
+                    {showDakutenHeader && (
+                      <div className="col-span-full mt-6 mb-2 flex items-center gap-3">
+                        <div className="h-px bg-blue-200 flex-grow"></div>
+                        <span className="text-[10px] font-bold tracking-[0.2em] text-blue-400 uppercase">Dakuten</span>
+                        <div className="h-px bg-blue-200 flex-grow"></div>
+                      </div>
+                    )}
+                    {showHandakutenHeader && (
+                      <div className="col-span-full mt-6 mb-2 flex items-center gap-3">
+                        <div className="h-px bg-pink-200 flex-grow"></div>
+                        <span className="text-[10px] font-bold tracking-[0.2em] text-pink-400 uppercase">Handakuten</span>
+                        <div className="h-px bg-pink-200 flex-grow"></div>
+                      </div>
+                    )}
                     <div className={`flex items-center justify-center font-bold text-slate-400 capitalize pr-1 ${gridScale === 2 ? 'text-xl' : 'text-xs'}`}>
                       {rowLabel === '-' ? '' : rowLabel}
                     </div>
                     {rowItems.map((item, colIndex) => (
-                      item ? (
-                        <div key={`${item.char}-${colIndex}`} className="w-full">
+                      <div key={colIndex} className="w-full p-0.5">
+                        {item ? (
                           <Card
                             char={item.char}
                             romaji={item.romaji}
@@ -148,11 +174,12 @@ function App() {
                             onReveal={() => { }}
                             size="compact"
                             scale={gridScale}
+                            bgColor={sectionBg}
                           />
-                        </div>
-                      ) : (
-                        <div key={`empty-${rowIndex}-${colIndex}`} className="w-full" />
-                      )
+                        ) : (
+                          <div className="w-full h-full" />
+                        )}
+                      </div>
                     ))}
                   </Fragment>
                 );
@@ -162,7 +189,7 @@ function App() {
             {/* Origin Reference Links */}
             <div className="mt-16 mb-8 flex flex-col items-center gap-3 border-t border-slate-100 pt-8 w-full max-w-sm">
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 pointer-events-none text-center">
-                Origins & References
+                References
               </p>
               <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
                 <a
@@ -182,6 +209,26 @@ function App() {
                 >
                   <span className="w-2 h-2 rounded-full bg-pink-400 group-hover:scale-125 transition-transform shadow-sm shadow-pink-200"></span>
                   Katakana Origin
+                </a>
+              </div>
+              <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Hiragana_Chart_Seion_Dakuon_Yoon.png"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-slate-500 hover:text-indigo-600 transition-colors flex items-center gap-2 group font-medium"
+                >
+                  <span className="w-2 h-2 rounded-full bg-indigo-400 group-hover:scale-125 transition-transform shadow-sm shadow-indigo-200"></span>
+                  平假名表
+                </a>
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Katakana_Chart_Seion_Dakuon_Yoon.png"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-slate-500 hover:text-pink-600 transition-colors flex items-center gap-2 group font-medium"
+                >
+                  <span className="w-2 h-2 rounded-full bg-pink-400 group-hover:scale-125 transition-transform shadow-sm shadow-pink-200"></span>
+                  片假名表
                 </a>
               </div>
             </div>

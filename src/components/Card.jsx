@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Card({ char, romaji, origin, isRevealed, onReveal, size = 'normal', scale = 1 }) {
+export default function Card({ char, romaji, origin, isRevealed, onReveal, size = 'normal', scale = 1, bgColor }) {
   const [flipped, setFlipped] = useState(false);
 
   useEffect(() => {
@@ -59,14 +59,14 @@ export default function Card({ char, romaji, origin, isRevealed, onReveal, size 
         ${flipped ? 'rotate-y-180' : ''}
       `}>
         {/* Front (Character) */}
-        <div className={`absolute backface-hidden w-full h-full bg-slate-50 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex items-center justify-center`}>
+        <div className={`absolute backface-hidden w-full h-full ${bgColor || 'bg-slate-50'} rounded-lg sm:rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex items-center justify-center`}>
           <span className={`${charTextSize} font-bold bg-gradient-to-br from-indigo-600 to-cyan-600 bg-clip-text text-transparent`}>
             {char}
           </span>
         </div>
 
         {/* Back (Romaji) */}
-        <div className={`absolute backface-hidden w-full h-full bg-slate-50 rounded-lg sm:rounded-xl border-2 border-indigo-100 shadow-sm flex flex-col items-center justify-center rotate-y-180`}>
+        <div className={`absolute backface-hidden w-full h-full ${bgColor || 'bg-slate-50'} rounded-lg sm:rounded-xl border-2 border-indigo-100 shadow-sm flex flex-col items-center justify-center rotate-y-180`}>
           <button
             onClick={speak}
             className={`${speakBtnSize} font-bold text-slate-800 ${size === 'compact' ? 'mb-0' : 'mb-2'} hover:scale-110 active:scale-95 transition-transform cursor-pointer`}
